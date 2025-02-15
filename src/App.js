@@ -6,6 +6,7 @@ import DoughnutChart from "./components/DoughnutChart";
 import RadarChart from "./components/RadarChart";
 import ScatterChart from "./components/ScatterChart";
 import PolarAreaChart from "./components/PolarAreaChart";
+import MostRatedAppsChart  from "./components/MostRatedAppsChart";
 import appData from "./data.json";
 import Test from "./test.js";
 
@@ -107,6 +108,7 @@ const App = () => {
         <div className="w-full lg:w-3/4 mx-auto">
           <h2 className="text-lg font-semibold">Reviews, Ratings, and Installs per App</h2>
           <div className="flex flex-wrap justify-around">
+              <div className="w-full lg:w-1/2 p-4"> <MostRatedAppsChart /></div> 
             <div className="w-full lg:w-1/2 p-4">
               <BarChart data={chartData} />
             </div>
