@@ -3,6 +3,12 @@
 This project provides visualizations of data for applications downloaded from the app store. It is built using JavaScript, HTML, and CSS.
 ## interface OverView
 ![Example Image](./public/capt1.png)
+![Example Image](./public/capt2.png)
+![Example Image](./public/capt3.png)
+![Example Image](./public/capt4.png)
+![Example Image](./public/capt5.png)
+![Example Image](./public/capt6.png)
+![Example Image](./public/capt7.png)
 ## Features
 
 - Interactive charts and graphs to analyze app data

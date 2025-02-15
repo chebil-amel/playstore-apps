@@ -6,6 +6,7 @@ import SizeInstallsChart from './components/SizeInstallsChart';
 import appData from './data.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import './App.css'; // Import CSS file for styling
 
 // Helper function to convert size string to number (in MB)
 const parseSize = (size) => {
@@ -102,63 +103,70 @@ const App = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4 text-center">Google PlayStore Data Visualization</h1>
+    <div className="dashboard">
+      <h1 className="dashboard-title">Google PlayStore Data Visualization</h1>
 
-      {/* Most Rated Apps Chart */}
-      <div className="mb-4 flex items-center justify-center cursor-pointer" onClick={toggleMostRatedVisibility}>
-        <FontAwesomeIcon icon={isMostRatedVisible ? faChevronUp : faChevronDown} className="mr-2" />
-        <span>{isMostRatedVisible ? 'Most Rated Apps' : 'Show Most Rated Apps'}</span>
-      </div>
-      {isMostRatedVisible && (
-        <div className="w-full lg:w-1/2 p-4 mx-auto">
-          <MostRatedAppsChart chartData={chartData} />
+      <div className="charts-container">
+        <div className="chart-section">
+          <div className="chart-header" onClick={toggleMostRatedVisibility}>
+            <FontAwesomeIcon icon={isMostRatedVisible ? faChevronUp : faChevronDown} className="toggle-icon" />
+            <span>{isMostRatedVisible ? 'Most Rated Apps' : 'Show Most Rated Apps'}</span>
+          </div>
+          {isMostRatedVisible && (
+            <div className="chart">
+              <MostRatedAppsChart chartData={chartData} />
+            </div>
+          )}
         </div>
-      )}
 
-      {/* Installs Chart */}
-      <div className="mb-4 flex items-center justify-center cursor-pointer" onClick={toggleInstallsVisibility}>
-        <FontAwesomeIcon icon={isInstallsVisible ? faChevronUp : faChevronDown} className="mr-2" />
-        <span>{isInstallsVisible ? 'Installs Chart' : 'Show Installs Chart'}</span>
-      </div>
-      {isInstallsVisible && (
-        <div className="w-full lg:w-1/2 p-4 mx-auto">
-          <InstallsChart />
+        <div className="chart-section">
+          <div className="chart-header" onClick={toggleInstallsVisibility}>
+            <FontAwesomeIcon icon={isInstallsVisible ? faChevronUp : faChevronDown} className="toggle-icon" />
+            <span>{isInstallsVisible ? 'Installs Chart' : 'Show Installs Chart'}</span>
+          </div>
+          {isInstallsVisible && (
+            <div className="chart">
+              <InstallsChart />
+            </div>
+          )}
         </div>
-      )}
 
-      {/* Rating and Content Rating Chart */}
-      <div className="mb-4 flex items-center justify-center cursor-pointer" onClick={toggleRatingContentVisibility}>
-        <FontAwesomeIcon icon={isRatingContentVisible ? faChevronUp : faChevronDown} className="mr-2" />
-        <span>{isRatingContentVisible ? 'Rating and Content Rating Chart' : 'Show Rating and Content Rating Chart'}</span>
-      </div>
-      {isRatingContentVisible && (
-        <div className="w-full lg:w-1/2 p-4 mx-auto">
-          <RatingContentChart />
+        <div className="chart-section">
+          <div className="chart-header" onClick={toggleRatingContentVisibility}>
+            <FontAwesomeIcon icon={isRatingContentVisible ? faChevronUp : faChevronDown} className="toggle-icon" />
+            <span>{isRatingContentVisible ? 'Rating and Content Rating Chart' : 'Show Rating and Content Rating Chart'}</span>
+          </div>
+          {isRatingContentVisible && (
+            <div className="chart">
+              <RatingContentChart />
+            </div>
+          )}
         </div>
-      )}
 
-      {/* Size and Installs Chart */}
-      <div className="mb-4 flex items-center justify-center cursor-pointer" onClick={toggleSizeInstallsVisibility}>
-        <FontAwesomeIcon icon={isSizeInstallsVisible ? faChevronUp : faChevronDown} className="mr-2" />
-        <span>{isSizeInstallsVisible ? 'Size and Installs Chart' : 'Show Size and Installs Chart'}</span>
-      </div>
-      {isSizeInstallsVisible && (
-        <div className="w-full lg:w-1/2 p-4 mx-auto">
-          <SizeInstallsChart />
+        <div className="chart-section">
+          <div className="chart-header" onClick={toggleSizeInstallsVisibility}>
+            <FontAwesomeIcon icon={isSizeInstallsVisible ? faChevronUp : faChevronDown} className="toggle-icon" />
+            <span>{isSizeInstallsVisible ? 'Size and Installs Chart' : 'Show Size and Installs Chart'}</span>
+          </div>
+          {isSizeInstallsVisible && (
+            <div className="chart">
+              <SizeInstallsChart />
+            </div>
+          )}
         </div>
-      )}
 
-      {/* Update and Category Chart */}
-      <div className="mb-4 flex items-center justify-center cursor-pointer" onClick={toggleUpdateCategoryVisibility}>
-        <FontAwesomeIcon icon={isUpdateCategoryVisible ? faChevronUp : faChevronDown} className="mr-2" />
-        <span>{isUpdateCategoryVisible ? 'Update and Category Chart' : 'Show Update and Category Chart'}</span>
-      </div>
-      {isUpdateCategoryVisible && (
-        <div className="w-full lg:w-1/2 p-4 mx-auto">
-       
+        <div className="chart-section">
+          <div className="chart-header" onClick={toggleUpdateCategoryVisibility}>
+            <FontAwesomeIcon icon={isUpdateCategoryVisible ? faChevronUp : faChevronDown} className="toggle-icon" />
+            <span>{isUpdateCategoryVisible ? 'Update and Category Chart' : 'Show Update and Category Chart'}</span>
+          </div>
+          {isUpdateCategoryVisible && (
+            <div className="chart">
+            
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
