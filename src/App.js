@@ -1,145 +1,97 @@
-import React, { useState, useEffect } from "react";
-import BarChart from "./components/BarChart";
-import PieChart from "./components/PieChart";
-import LineChart from "./components/LineChart";
-import DoughnutChart from "./components/DoughnutChart";
-import RadarChart from "./components/RadarChart";
-import ScatterChart from "./components/ScatterChart";
-import PolarAreaChart from "./components/PolarAreaChart";
-import MostRatedAppsChart  from "./components/MostRatedAppsChart";
-import appData from "./data.json";
-
+import React, { useState, useEffect } from 'react';
+import MostRatedAppsChart from './components/MostRatedAppsChart';
+import appData from './data.json';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 // Helper function to convert size string to number (in MB)
 const parseSize = (size) => {
   if (!size) return 0;
-  const sizeInMB = parseFloat(size.replace(/[^0-9.]/g, ""));
+  const sizeInMB = parseFloat(size.replace(/[^0-9.]/g, ''));
   return sizeInMB;
 };
 
 // Define a color palette
 const colorPalette = [
-  "rgba(75,192,192,0.6)",
-  "rgba(153,102,255,0.6)",
-  "rgba(255,159,64,0.6)",
-  "rgba(255,99,132,0.6)",
-  "rgba(54,162,235,0.6)",
-  "rgba(255,206,86,0.6)",
-  "rgba(75,192,192,0.6)",
-  "rgba(153,102,255,0.6)",
-  "rgba(255,159,64,0.6)",
-  "rgba(255,99,132,0.6)"
+  'rgba(75,192,192,0.6)',
+  'rgba(153,102,255,0.6)',
+  'rgba(255,159,64,0.6)',
+  'rgba(255,99,132,0.6)',
+  'rgba(54,162,235,0.6)',
+  'rgba(255,206,86,0.6)',
 ];
 
 const App = () => {
   const [chartData, setChartData] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedSize, setSelectedSize] = useState("All");
-  const [selectedGenre, setSelectedGenre] = useState("All");
-  const [selectedContentRating, setSelectedContentRating] = useState("All");
+  const [isChartVisible, setIsChartVisible] = useState(true);
+  const [filters, setFilters] = useState({
+    category: 'All',
+    size: 'All',
+    genre: 'All',
+    contentRating: 'All',
+  });
 
   useEffect(() => {
     if (!appData || !Array.isArray(appData)) {
-      console.error("appData is undefined or not an array");
+      console.error('appData is undefined or not an array');
       return;
     }
 
-    let filteredData = selectedCategory === "All" ? appData : appData.filter((app) => app.Category === selectedCategory);
+    let filteredData = appData;
 
-    if (selectedGenre !== "All") {
-      filteredData = filteredData.filter((app) => app.Genres && app.Genres.includes(selectedGenre));
+    // Apply filters
+    if (filters.category !== 'All') {
+      filteredData = filteredData.filter(app => app.Category === filters.category);
     }
-
-    if (selectedSize !== "All") {
-      filteredData = filteredData.filter((app) => {
+    if (filters.genre !== 'All') {
+      filteredData = filteredData.filter(app => app.Genres && app.Genres.includes(filters.genre));
+    }
+    if (filters.size !== 'All') {
+      filteredData = filteredData.filter(app => {
         const appSize = parseSize(app.Size);
-        if (selectedSize === "Small") return appSize <= 20;
-        if (selectedSize === "Medium") return appSize > 20 && appSize <= 50;
-        if (selectedSize === "Large") return appSize > 50;
+        if (filters.size === 'Small') return appSize <= 20;
+        if (filters.size === 'Medium') return appSize > 20 && appSize <= 50;
+        if (filters.size === 'Large') return appSize > 50;
         return true;
       });
     }
-
-    if (selectedContentRating !== "All") {
-      filteredData = filteredData.filter((app) => app.ContentRating === selectedContentRating);
+    if (filters.contentRating !== 'All') {
+      filteredData = filteredData.filter(app => app.ContentRating === filters.contentRating);
     }
 
-    const labels = filteredData.slice(0, 10).map((app) => app.App || "Unknown");
-    const reviews = filteredData.slice(0, 10).map((app) => parseInt(app.Reviews) || 0);
-    const ratings = filteredData.slice(0, 10).map((app) => parseFloat(app.Rating) || 0);
-    const installs = filteredData.slice(0, 10).map((app) => parseInt(app.Installs.replace(/[^0-9]/g, "")) || 0);
+    const labels = filteredData.slice(0, 10).map(app => app.App || 'Unknown');
+    const reviews = filteredData.slice(0, 10).map(app => parseInt(app.Reviews) || 0);
+    const ratings = filteredData.slice(0, 10).map(app => parseFloat(app.Rating) || 0);
+    const installs = filteredData.slice(0, 10).map(app => parseInt(app.Installs.replace(/[^0-9]/g, '')) || 0);
 
     setChartData({
       labels,
       datasets: [
-        { label: "Number of Reviews", data: reviews, backgroundColor: colorPalette },
-        { label: "Ratings", data: ratings, backgroundColor: colorPalette },
-        { label: "Installs", data: installs, backgroundColor: colorPalette }
-      ]
+        { label: 'Number of Reviews', data: reviews, backgroundColor: colorPalette },
+        { label: 'Ratings', data: ratings, backgroundColor: colorPalette },
+        { label: 'Installs', data: installs, backgroundColor: colorPalette },
+      ],
     });
-  }, [selectedCategory, selectedSize, selectedGenre, selectedContentRating]);
+  }, [filters]);
+
+  const toggleChartVisibility = () => {
+    setIsChartVisible(!isChartVisible);
+  };
 
   return (
     <div className="p-6">
-         <h1 className="text-2xl font-bold mb-4">Google PlayStore Data Visualization</h1>
-       <div className="w-full lg:w-1/2 p-4"> <MostRatedAppsChart /></div> 
-     
-   
-
-      <div className="mb-4">
-        <label className="text-lg font-semibold">Filter by Genre: </label>
-        <select className="ml-2 p-2 border rounded" value={selectedGenre} onChange={(e) => setSelectedGenre(e.target.value)}>
-          <option value="All">All Genres</option>
-          {[...new Set(appData.map((app) => app.Genres ? app.Genres.split(";") : []).flat())].map((genre, index) => (
-            <option key={index} value={genre}>{genre}</option>
-          ))}
-        </select>
-      </div>
-
-      <div className="mb-4">
-        <label className="text-lg font-semibold">Filter by Content Rating: </label>
-        <select className="ml-2 p-2 border rounded" value={selectedContentRating} onChange={(e) => setSelectedContentRating(e.target.value)}>
-          <option value="All">All Ratings</option>
-          {[...new Set(appData.map((app) => app.ContentRating))].map((rating, index) => (
-            <option key={index} value={rating}>{rating}</option>
-          ))}
-        </select>
-      </div>
-
-      {chartData ? (
-        <div className="w-full lg:w-3/4 mx-auto">
-            
-          <h2 className="text-lg font-semibold">Reviews, Ratings, and Installs per App</h2>
-          <div className="flex flex-wrap justify-around">
-           
-            <div className="w-full lg:w-1/2 p-4">
-              <BarChart data={chartData} />
-            </div>
-            <div className="w-full lg:w-1/2 p-4">
-              <PieChart data={chartData} />
-            </div>
-            <div className="w-full lg:w-1/2 p-4">
-              <LineChart data={chartData} />
-            </div>
-            <div className="w-full lg:w-1/2 p-4">
-              <DoughnutChart data={chartData} />
-            </div>
-            <div className="w-full lg:w-1/2 p-4">
-              <RadarChart data={chartData} />
-            </div>
-            <div className="w-full lg:w-1/2 p-4">
-              <ScatterChart data={chartData} />
-            </div>
-            <div className="w-full lg:w-1/2 p-4">
-              <PolarAreaChart data={chartData} />
-            </div>
-          </div>
+      <h1 className="text-2xl font-bold mb-4">Google PlayStore Data Visualization</h1>
+      <button onClick={toggleChartVisibility} className="mb-4 flex items-center">
+        <FontAwesomeIcon icon={isChartVisible ? faChevronUp : faChevronDown} className="mr-2" />
+        {isChartVisible ? '  Most Rated App' : ''}
+      </button>
+      {isChartVisible && (
+        <div className="w-full lg:w-1/2 p-4">
+          <MostRatedAppsChart chartData={chartData} />
         </div>
-      ) : (
-        <p>Loading charts...</p>
       )}
     </div>
   );
 };
 
-export default App;
+export default App
