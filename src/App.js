@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { Bar, Pie, Line, Doughnut, Radar, Scatter, PolarArea } from "react-chartjs-2";
-import "chart.js/auto";
+import BarChart from "./components/BarChart";
+import PieChart from "./components/PieChart";
+import LineChart from "./components/LineChart";
+import DoughnutChart from "./components/DoughnutChart";
+import RadarChart from "./components/RadarChart";
+import ScatterChart from "./components/ScatterChart";
+import PolarAreaChart from "./components/PolarAreaChart";
 import appData from "./data.json";
 import Test from "./test.js";
+
 // Helper function to convert size string to number (in MB)
 const parseSize = (size) => {
   if (!size) return 0;
   const sizeInMB = parseFloat(size.replace(/[^0-9.]/g, ""));
   return sizeInMB;
 };
+
+// Define a color palette
+const colorPalette = [
+  "rgba(75,192,192,0.6)",
+  "rgba(153,102,255,0.6)",
+  "rgba(255,159,64,0.6)",
+  "rgba(255,99,132,0.6)",
+  "rgba(54,162,235,0.6)",
+  "rgba(255,206,86,0.6)",
+  "rgba(75,192,192,0.6)",
+  "rgba(153,102,255,0.6)",
+  "rgba(255,159,64,0.6)",
+  "rgba(255,99,132,0.6)"
+];
 
 const App = () => {
   const [chartData, setChartData] = useState(null);
@@ -51,9 +71,9 @@ const App = () => {
     setChartData({
       labels,
       datasets: [
-        { label: "Number of Reviews", data: reviews, backgroundColor: "rgba(75,192,192,0.6)" },
-        { label: "Ratings", data: ratings, backgroundColor: "rgba(153,102,255,0.6)" },
-        { label: "Installs", data: installs, backgroundColor: "rgba(255,159,64,0.6)" }
+        { label: "Number of Reviews", data: reviews, backgroundColor: colorPalette },
+        { label: "Ratings", data: ratings, backgroundColor: colorPalette },
+        { label: "Installs", data: installs, backgroundColor: colorPalette }
       ]
     });
   }, [selectedCategory, selectedSize, selectedGenre, selectedContentRating]);
@@ -86,16 +106,29 @@ const App = () => {
       {chartData ? (
         <div className="w-full lg:w-3/4 mx-auto">
           <h2 className="text-lg font-semibold">Reviews, Ratings, and Installs per App</h2>
-         
-        
-          <Bar data={chartData} />
-          <Pie data={chartData} />
-          <Line data={chartData} />
-          <Doughnut data={chartData} />
-          <Radar data={chartData} />
-          <Scatter data={chartData} />
-          <PolarArea data={chartData} />
-          
+          <div className="flex flex-wrap justify-around">
+            <div className="w-full lg:w-1/2 p-4">
+              <BarChart data={chartData} />
+            </div>
+            <div className="w-full lg:w-1/2 p-4">
+              <PieChart data={chartData} />
+            </div>
+            <div className="w-full lg:w-1/2 p-4">
+              <LineChart data={chartData} />
+            </div>
+            <div className="w-full lg:w-1/2 p-4">
+              <DoughnutChart data={chartData} />
+            </div>
+            <div className="w-full lg:w-1/2 p-4">
+              <RadarChart data={chartData} />
+            </div>
+            <div className="w-full lg:w-1/2 p-4">
+              <ScatterChart data={chartData} />
+            </div>
+            <div className="w-full lg:w-1/2 p-4">
+              <PolarAreaChart data={chartData} />
+            </div>
+          </div>
         </div>
       ) : (
         <p>Loading charts...</p>
