@@ -30,6 +30,7 @@ const App = () => {
   const [isInstallsVisible, setIsInstallsVisible] = useState(true);
   const [isRatingContentVisible, setIsRatingContentVisible] = useState(true);
   const [isSizeInstallsVisible, setIsSizeInstallsVisible] = useState(true);
+  const [isUpdateCategoryVisible, setIsUpdateCategoryVisible] = useState(true);
   const [filters, setFilters] = useState({
     category: 'All',
     size: 'All',
@@ -96,6 +97,10 @@ const App = () => {
     setIsSizeInstallsVisible(!isSizeInstallsVisible);
   };
 
+  const toggleUpdateCategoryVisibility = () => {
+    setIsUpdateCategoryVisible(!isUpdateCategoryVisible);
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4 text-center">Google PlayStore Data Visualization</h1>
@@ -141,6 +146,17 @@ const App = () => {
       {isSizeInstallsVisible && (
         <div className="w-full lg:w-1/2 p-4 mx-auto">
           <SizeInstallsChart />
+        </div>
+      )}
+
+      {/* Update and Category Chart */}
+      <div className="mb-4 flex items-center justify-center cursor-pointer" onClick={toggleUpdateCategoryVisibility}>
+        <FontAwesomeIcon icon={isUpdateCategoryVisible ? faChevronUp : faChevronDown} className="mr-2" />
+        <span>{isUpdateCategoryVisible ? 'Update and Category Chart' : 'Show Update and Category Chart'}</span>
+      </div>
+      {isUpdateCategoryVisible && (
+        <div className="w-full lg:w-1/2 p-4 mx-auto">
+       
         </div>
       )}
     </div>
