@@ -20,6 +20,16 @@ const InstallsChart = () => {
             return parseInt(installs, 10);
         };
 
+        // Function to generate a random color
+        const getRandomColor = () => {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        };
+
         // Aggregate installs by category
         const installsByCategory = data.reduce((acc, app) => {
             const category = app.Category;
@@ -48,15 +58,29 @@ const InstallsChart = () => {
                 datasets: [{
                     label: 'Number of Installs',
                     data: installs,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: categories.map(() => getRandomColor()),
+                    borderColor: categories.map(() => getRandomColor()),
                     borderWidth: 1
                 }]
             },
             options: {
+                maintainAspectRatio: false,
                 scales: {
                     y: {
-                        beginAtZero: true
+                        type: 'logarithmic',
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Installs'
+                        },
+                        ticks: {
+                            callback: function(value, index, values) {
+                                if (value === 1000 || value === 10000 || value === 100000 || value === 1000000 || value === 10000000 || value === 100000000) {
+                                    return value.toLocaleString(); // Show only specific ticks
+                                }
+                                return null;
+                            }
+                        }
                     }
                 }
             }
@@ -71,9 +95,9 @@ const InstallsChart = () => {
     }, []);
 
     return (
-        <div>
+        <div className="chart-container" style={{ position: 'relative', height: '40vh', width: '80vw' }}>
             <h2>Number of Installs by Category</h2>
-            <canvas ref={chartRef} width="400" height="200"></canvas>
+            <canvas ref={chartRef}></canvas>
         </div>
     );
 };

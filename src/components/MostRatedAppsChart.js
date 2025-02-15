@@ -18,14 +18,18 @@ const MostRatedAppsChart = () => {
 
     useEffect(() => {
         const data = appData;
-        
+
         if (data && Array.isArray(data)) {
             data.forEach(d => {
                 d.Reviews = +d.Reviews;
             });
 
             const filteredData = data.filter(d => !isNaN(d.Reviews));
-            const sortedData = filteredData.sort((a, b) => b.Reviews - a.Reviews).slice(0, 10);
+            const uniqueData = Array.from(new Set(filteredData.map(a => a.App)))
+                                    .map(app => {
+                                        return filteredData.find(a => a.App === app)
+                                    });
+            const sortedData = uniqueData.sort((a, b) => b.Reviews - a.Reviews).slice(0, 10);
 
             const labels = sortedData.map(d => d.App);
             const reviews = sortedData.map(d => d.Reviews);
@@ -47,10 +51,11 @@ const MostRatedAppsChart = () => {
     }
 
     return (
-        <div className="chart-container">
+        <div className="chart-container" style={{ position: 'relative', height: '40vh', width: '80vw' }}>
             <Bar
                 data={chartData}
                 options={{
+                    maintainAspectRatio: false,
                     indexAxis: 'y',
                     scales: {
                         x: {

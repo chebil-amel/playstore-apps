@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import MostRatedAppsChart from './components/MostRatedAppsChart';
 import InstallsChart from './components/InstallsChart';
+import RatingContentChart from './components/RatingContentChart';
+import SizeInstallsChart from './components/SizeInstallsChart';
 import appData from './data.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -26,6 +28,8 @@ const App = () => {
   const [chartData, setChartData] = useState(null);
   const [isMostRatedVisible, setIsMostRatedVisible] = useState(true);
   const [isInstallsVisible, setIsInstallsVisible] = useState(true);
+  const [isRatingContentVisible, setIsRatingContentVisible] = useState(true);
+  const [isSizeInstallsVisible, setIsSizeInstallsVisible] = useState(true);
   const [filters, setFilters] = useState({
     category: 'All',
     size: 'All',
@@ -84,33 +88,63 @@ const App = () => {
     setIsInstallsVisible(!isInstallsVisible);
   };
 
+  const toggleRatingContentVisibility = () => {
+    setIsRatingContentVisible(!isRatingContentVisible);
+  };
+
+  const toggleSizeInstallsVisibility = () => {
+    setIsSizeInstallsVisible(!isSizeInstallsVisible);
+  };
+
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Google PlayStore Data Visualization</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">Google PlayStore Data Visualization</h1>
 
       {/* Most Rated Apps Chart */}
-      <button onClick={toggleMostRatedVisibility} className="mb-4 flex items-center">
+      <div className="mb-4 flex items-center justify-center cursor-pointer" onClick={toggleMostRatedVisibility}>
         <FontAwesomeIcon icon={isMostRatedVisible ? faChevronUp : faChevronDown} className="mr-2" />
-        {isMostRatedVisible ? 'Most Rated Apps' : 'Show Most Rated Apps'}
-      </button>
+        <span>{isMostRatedVisible ? 'Most Rated Apps' : 'Show Most Rated Apps'}</span>
+      </div>
       {isMostRatedVisible && (
-        <div className="w-full lg:w-1/2 p-4">
+        <div className="w-full lg:w-1/2 p-4 mx-auto">
           <MostRatedAppsChart chartData={chartData} />
- </div>
+        </div>
       )}
 
       {/* Installs Chart */}
-      <button onClick={toggleInstallsVisibility} className="mb-4 flex items-center">
+      <div className="mb-4 flex items-center justify-center cursor-pointer" onClick={toggleInstallsVisibility}>
         <FontAwesomeIcon icon={isInstallsVisible ? faChevronUp : faChevronDown} className="mr-2" />
-        {isInstallsVisible ? 'Installs Chart' : 'Show Installs Chart'}
-      </button>
+        <span>{isInstallsVisible ? 'Installs Chart' : 'Show Installs Chart'}</span>
+      </div>
       {isInstallsVisible && (
-        <div className="w-full lg:w-1/2 p-4">
+        <div className="w-full lg:w-1/2 p-4 mx-auto">
           <InstallsChart />
+        </div>
+      )}
+
+      {/* Rating and Content Rating Chart */}
+      <div className="mb-4 flex items-center justify-center cursor-pointer" onClick={toggleRatingContentVisibility}>
+        <FontAwesomeIcon icon={isRatingContentVisible ? faChevronUp : faChevronDown} className="mr-2" />
+        <span>{isRatingContentVisible ? 'Rating and Content Rating Chart' : 'Show Rating and Content Rating Chart'}</span>
+      </div>
+      {isRatingContentVisible && (
+        <div className="w-full lg:w-1/2 p-4 mx-auto">
+          <RatingContentChart />
+        </div>
+      )}
+
+      {/* Size and Installs Chart */}
+      <div className="mb-4 flex items-center justify-center cursor-pointer" onClick={toggleSizeInstallsVisibility}>
+        <FontAwesomeIcon icon={isSizeInstallsVisible ? faChevronUp : faChevronDown} className="mr-2" />
+        <span>{isSizeInstallsVisible ? 'Size and Installs Chart' : 'Show Size and Installs Chart'}</span>
+      </div>
+      {isSizeInstallsVisible && (
+        <div className="w-full lg:w-1/2 p-4 mx-auto">
+          <SizeInstallsChart />
         </div>
       )}
     </div>
   );
 };
 
-export default App
+export default App;
