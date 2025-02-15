@@ -8,7 +8,7 @@ import ScatterChart from "./components/ScatterChart";
 import PolarAreaChart from "./components/PolarAreaChart";
 import MostRatedAppsChart  from "./components/MostRatedAppsChart";
 import appData from "./data.json";
-import Test from "./test.js";
+
 
 // Helper function to convert size string to number (in MB)
 const parseSize = (size) => {
@@ -81,8 +81,10 @@ const App = () => {
 
   return (
     <div className="p-6">
-        <Test />
-      <h1 className="text-2xl font-bold mb-4">App Data Visualization</h1>
+         <h1 className="text-2xl font-bold mb-4">Google PlayStore Data Visualization</h1>
+       <div className="w-full lg:w-1/2 p-4"> <MostRatedAppsChart /></div> 
+     
+   
 
       <div className="mb-4">
         <label className="text-lg font-semibold">Filter by Genre: </label>
@@ -106,9 +108,10 @@ const App = () => {
 
       {chartData ? (
         <div className="w-full lg:w-3/4 mx-auto">
+            
           <h2 className="text-lg font-semibold">Reviews, Ratings, and Installs per App</h2>
           <div className="flex flex-wrap justify-around">
-              <div className="w-full lg:w-1/2 p-4"> <MostRatedAppsChart /></div> 
+           
             <div className="w-full lg:w-1/2 p-4">
               <BarChart data={chartData} />
             </div>

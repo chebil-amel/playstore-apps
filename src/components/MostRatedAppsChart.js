@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
-import * as d3 from 'd3';
+import appData from '../data.json';
+
+// Function to generate a random color
+const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+};
 
 const MostRatedAppsChart = () => {
-    const [chartData, setChartData] = useState({});
+    const [chartData, setChartData] = useState(null);
 
     useEffect(() => {
-        const csvUrl = 'https://github.com/chebil-amel/playstore-apps/blob/ec7d3d68f7eca2f3d5dadc31be1e3feb3049ac4e/public/googleplaystore.csv?raw=true';
-
-        const fetchData = async () => {
-            const data = await d3.csv(csvUrl);
+        const data = appData;
+        
+        if (data && Array.isArray(data)) {
             data.forEach(d => {
                 d.Reviews = +d.Reviews;
             });
@@ -20,8 +29,7 @@ const MostRatedAppsChart = () => {
 
             const labels = sortedData.map(d => d.App);
             const reviews = sortedData.map(d => d.Reviews);
-            const types = sortedData.map(d => d.Type);
-            const colors = types.map(type => type === 'Free' ? 'blue' : 'orange');
+            const colors = sortedData.map(() => getRandomColor());
 
             setChartData({
                 labels: labels,
@@ -31,15 +39,15 @@ const MostRatedAppsChart = () => {
                     backgroundColor: colors,
                 }]
             });
-        };
-
-        fetchData();
+        }
     }, []);
 
+    if (!chartData) {
+        return <p>Loading chart data...</p>;
+    }
+
     return (
-        <div>
-            
-            <h1>Top 10 Most Rated Apps by Type</h1>
+        <div className="chart-container">
             <Bar
                 data={chartData}
                 options={{
