@@ -1,7 +1,8 @@
 # Playstore Apps Visualization
 
 This project provides visualizations of data for applications downloaded from the app store. It is built using JavaScript, HTML, and CSS.
-
+## interface OverView
+![Example Image](images/capt1.png)
 ## Features
 
 - Interactive charts and graphs to analyze app data
