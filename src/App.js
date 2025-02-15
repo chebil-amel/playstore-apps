@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MostRatedAppsChart from './components/MostRatedAppsChart';
+import InstallsChart from './components/InstallsChart';
 import appData from './data.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -23,7 +24,8 @@ const colorPalette = [
 
 const App = () => {
   const [chartData, setChartData] = useState(null);
-  const [isChartVisible, setIsChartVisible] = useState(true);
+  const [isMostRatedVisible, setIsMostRatedVisible] = useState(true);
+  const [isInstallsVisible, setIsInstallsVisible] = useState(true);
   const [filters, setFilters] = useState({
     category: 'All',
     size: 'All',
@@ -74,20 +76,37 @@ const App = () => {
     });
   }, [filters]);
 
-  const toggleChartVisibility = () => {
-    setIsChartVisible(!isChartVisible);
+  const toggleMostRatedVisibility = () => {
+    setIsMostRatedVisible(!isMostRatedVisible);
+  };
+
+  const toggleInstallsVisibility = () => {
+    setIsInstallsVisible(!isInstallsVisible);
   };
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Google PlayStore Data Visualization</h1>
-      <button onClick={toggleChartVisibility} className="mb-4 flex items-center">
-        <FontAwesomeIcon icon={isChartVisible ? faChevronUp : faChevronDown} className="mr-2" />
-        {isChartVisible ? '  Most Rated App' : ''}
+
+      {/* Most Rated Apps Chart */}
+      <button onClick={toggleMostRatedVisibility} className="mb-4 flex items-center">
+        <FontAwesomeIcon icon={isMostRatedVisible ? faChevronUp : faChevronDown} className="mr-2" />
+        {isMostRatedVisible ? 'Most Rated Apps' : 'Show Most Rated Apps'}
       </button>
-      {isChartVisible && (
+      {isMostRatedVisible && (
         <div className="w-full lg:w-1/2 p-4">
           <MostRatedAppsChart chartData={chartData} />
+ </div>
+      )}
+
+      {/* Installs Chart */}
+      <button onClick={toggleInstallsVisibility} className="mb-4 flex items-center">
+        <FontAwesomeIcon icon={isInstallsVisible ? faChevronUp : faChevronDown} className="mr-2" />
+        {isInstallsVisible ? 'Installs Chart' : 'Show Installs Chart'}
+      </button>
+      {isInstallsVisible && (
+        <div className="w-full lg:w-1/2 p-4">
+          <InstallsChart />
         </div>
       )}
     </div>
