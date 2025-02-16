@@ -3,6 +3,7 @@ import MostRatedAppsChart from './components/MostRatedAppsChart';
 import InstallsChart from './components/InstallsChart';
 import RatingContentChart from './components/RatingContentChart';
 import SizeInstallsChart from './components/SizeInstallsChart';
+import UpdateCategoryChart from './components/UpdateCategoryChart';
 import appData from './data.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -27,11 +28,11 @@ const colorPalette = [
 
 const App = () => {
   const [chartData, setChartData] = useState(null);
-  const [isMostRatedVisible, setIsMostRatedVisible] = useState(true);
-  const [isInstallsVisible, setIsInstallsVisible] = useState(true);
-  const [isRatingContentVisible, setIsRatingContentVisible] = useState(true);
-  const [isSizeInstallsVisible, setIsSizeInstallsVisible] = useState(true);
-  const [isUpdateCategoryVisible, setIsUpdateCategoryVisible] = useState(true);
+  const [isMostRatedVisible, setIsMostRatedVisible] = useState(false);
+  const [isInstallsVisible, setIsInstallsVisible] = useState(false);
+  const [isRatingContentVisible, setIsRatingContentVisible] = useState(false);
+  const [isSizeInstallsVisible, setIsSizeInstallsVisible] = useState(false);
+  const [isUpdateCategoryVisible, setIsUpdateCategoryVisible] = useState(false);
   const [filters, setFilters] = useState({
     category: 'All',
     size: 'All',
@@ -162,7 +163,7 @@ const App = () => {
           </div>
           {isUpdateCategoryVisible && (
             <div className="chart">
-            
+            <UpdateCategoryChart />
             </div>
           )}
         </div>
